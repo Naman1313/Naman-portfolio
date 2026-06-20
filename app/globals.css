@@ -1,0 +1,382 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Light mode — neobrutalist: off-white canvas, solid ink borders */
+  --background: oklch(0.97 0.01 90);
+  --foreground: oklch(0.16 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0 0);
+  --primary: oklch(0.55 0.22 264);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0 0);
+  --secondary-foreground: oklch(0.16 0 0);
+  --muted: oklch(0.94 0 0);
+  --muted-foreground: oklch(0.4 0 0);
+  --accent: oklch(0.55 0.22 264);
+  --accent-foreground: oklch(0.99 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.16 0 0);
+  --input: oklch(0.16 0 0);
+  --ring: oklch(0.55 0.22 264);
+  --radius: 0.5rem;
+
+  /* Brand tokens */
+  --brand: oklch(0.55 0.22 264);
+  --brand-2: oklch(0.6 0.22 295);
+  --grid: oklch(0.9 0 0);
+}
+
+.dark {
+  /* Dark mode — neobrutalist: deep ink canvas, off-white borders */
+  --background: oklch(0.15 0 0);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.19 0 0);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.19 0 0);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.7 0.2 264);
+  --primary-foreground: oklch(0.14 0 0);
+  --secondary: oklch(0.24 0 0);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.24 0 0);
+  --muted-foreground: oklch(0.72 0 0);
+  --accent: oklch(0.7 0.2 264);
+  --accent-foreground: oklch(0.14 0 0);
+  --destructive: oklch(0.55 0.22 27);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.95 0 0);
+  --input: oklch(0.95 0 0);
+  --ring: oklch(0.7 0.2 264);
+
+  --brand: oklch(0.7 0.2 264);
+  --brand-2: oklch(0.72 0.2 295);
+  --grid: oklch(0.3 0 0);
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), 'Inter Fallback', system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), 'Inter Fallback', system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  ::selection {
+    background: color-mix(in oklch, var(--brand) 35%, transparent);
+    color: var(--foreground);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  /* Subtle dotted grid background — kept, it's flat (no blur) */
+  .bg-grid {
+    background-image: radial-gradient(circle at 1px 1px,
+        var(--grid) 1px,
+        transparent 0);
+    background-size: 28px 28px;
+  }
+
+  /* Gradient text — kept as-is, it's typographic not a blur effect */
+  .text-gradient {
+    background: linear-gradient(120deg,
+        var(--foreground) 0%,
+        var(--brand) 50%,
+        var(--brand-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Floating animation */
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-float-slow {
+    animation: float 9s ease-in-out infinite;
+  }
+
+  /* Spin slow */
+  @keyframes spin-slow {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 24s linear infinite;
+  }
+
+  /* Marquee */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+  }
+
+  /* Terminal traffic dots */
+  .term-dots {
+    display: inline-flex;
+    gap: 6px;
+  }
+
+  .term-dots span {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    border: 1.5px solid var(--nb-ink);
+    background: color-mix(in oklch, var(--muted-foreground) 30%, transparent);
+  }
+
+  .term-dots span:nth-child(1) {
+    background: oklch(0.65 0.18 27);
+  }
+
+  .term-dots span:nth-child(2) {
+    background: oklch(0.78 0.16 85);
+  }
+
+  .term-dots span:nth-child(3) {
+    background: oklch(0.72 0.18 145);
+  }
+
+  /* Blinking caret */
+  @keyframes blink {
+
+    0%,
+    49% {
+      opacity: 1;
+    }
+
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .caret::after {
+    content: "▍";
+    margin-left: 2px;
+    color: var(--brand);
+    animation: blink 1.05s steps(1) infinite;
+  }
+
+  /* ============================================
+     NEOBRUTALIST CORE SYSTEM
+     Flat colors, hard ink borders, offset shadows.
+     No blur, no glow, no gradients on surfaces.
+     ============================================ */
+
+  :root {
+    --nb-yellow: oklch(0.86 0.16 95);
+    --nb-cyan: oklch(0.82 0.12 200);
+    --nb-pink: oklch(0.78 0.16 8);
+    --nb-ink: oklch(0.16 0 0);
+    --nb-border: oklch(0.16 0 0);
+  }
+
+  .dark {
+    --nb-yellow: oklch(0.78 0.15 95);
+    --nb-cyan: oklch(0.74 0.12 200);
+    --nb-pink: oklch(0.70 0.15 8);
+    --nb-ink: oklch(0.96 0 0);
+    --nb-border: oklch(0.35 0 0);
+  }
+
+  /* Hard border + flat offset shadow, no blur. Scales up from
+     the original two sizes so big hero panels can go heavier. */
+  .nb-block-sm {
+    border: 2px solid var(--nb-border);
+    box-shadow: 3px 3px 0 0 var(--nb-ink);
+  }
+
+  .nb-block {
+    border: 2.5px solid var(--nb-border);
+    box-shadow: 5px 5px 0 0 var(--nb-ink);
+  }
+
+  .nb-block-lg {
+    border: 3px solid var(--nb-border);
+    box-shadow: 8px 8px 0 0 var(--nb-ink);
+  }
+
+  /* Press interaction: shadow collapses, element moves into it. */
+  .nb-press {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .nb-press:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 0 var(--nb-ink);
+  }
+
+  .nb-press:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 0 var(--nb-ink);
+  }
+
+  .nb-press-sm:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 5px 5px 0 0 var(--nb-ink);
+  }
+
+  .nb-press-sm:active {
+    transform: translate(1.5px, 1.5px);
+    box-shadow: 1px 1px 0 0 var(--nb-ink);
+  }
+
+  /* Solid fills for the three accent colors. Text must always be dark for readability */
+  .nb-fill-yellow {
+    background: var(--nb-yellow);
+    color: oklch(0.16 0 0);
+  }
+
+  .nb-fill-cyan {
+    background: var(--nb-cyan);
+    color: oklch(0.16 0 0);
+  }
+
+  .nb-fill-pink {
+    background: var(--nb-pink);
+    color: oklch(0.16 0 0);
+  }
+
+  /* Flat surface fills — replace card/background for brutalist panels */
+  .nb-surface {
+    background: var(--card);
+    color: var(--card-foreground);
+  }
+
+  /* Tilt for sticky-note / marker-tag elements. */
+  .nb-tilt-3 {
+    transform: rotate(-3deg);
+  }
+
+  .nb-tilt-2 {
+    transform: rotate(-2deg);
+  }
+
+  .nb-tilt-1 {
+    transform: rotate(-1deg);
+  }
+
+  .nb-tilt1 {
+    transform: rotate(1deg);
+  }
+
+  .nb-tilt2 {
+    transform: rotate(2deg);
+  }
+
+  .nb-tilt3 {
+    transform: rotate(3deg);
+  }
+
+  /* Marker-highlight behind text, like a sticky-note swipe. */
+  .nb-highlight {
+    background: var(--nb-yellow);
+    padding: 0.05em 0.3em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  /* Dashed "tear here" divider */
+  .nb-tear {
+    border-top: 2px dashed var(--nb-ink);
+    opacity: 0.5;
+  }
+
+  /* 3D Hover Effect - Neobrutalist */
+  .hover-3d-card {
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+
+  .hover-3d-card:hover {
+    transform: translate(-10px, -10px) rotate(-2.5deg);
+    box-shadow: 10px 10px 0px 0px var(--nb-ink);
+    z-index: 10;
+  }
+
+  /* 3D Hover Effect with Left Tilt */
+  .hover-3d-card-tilt {
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+
+  .hover-3d-card-tilt:hover {
+    transform: translate(-10px, -10px) rotate(-2.5deg);
+    box-shadow: 10px 10px 0px 0px var(--nb-ink);
+    z-index: 10;
+  }
+}
